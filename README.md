@@ -138,6 +138,14 @@ The `translations` attribute will be added to your model data:
     "fr": {
       "title": "French Title",
       "content": "French Content"
+    },
+    "es": {
+      "title": null,
+      "content": null
+    },
+    "de": {
+      "title": null,
+      "content": null
     }
   }
 }
