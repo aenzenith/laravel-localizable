@@ -28,7 +28,6 @@ With publishing config you can access the config file from `config/localizable.p
 You can modify the default locales in the configuration file by adding new languages in the form of language codes and language names to the locales array. For example, if you want to add Spanish and German to the list of available languages, you can add the following lines to your configuration file:
 
 ```php
-...
 'locales' => [
     'en' => 'English',
     'fr' => 'French',
@@ -40,8 +39,6 @@ You can modify the default locales in the configuration file by adding new langu
 ### 1. Adding the `Localizable` trait to model
 
 ```php
-...
-
 use Aenzenith\LaravelLocalizable\Localizable;
 
 class Content extends Model
@@ -53,7 +50,7 @@ class Content extends Model
         'content',
     ];
 
-    ...
+    /* ... */
 }
 
 ```
