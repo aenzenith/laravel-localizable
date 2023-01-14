@@ -36,7 +36,7 @@ You can modify the default locales in the configuration file by adding new langu
 ],
 ```
 
-### 1. Adding the `Localizable` trait to model
+### Adding the `Localizable` trait to model
 
 ```php
 use Aenzenith\LaravelLocalizable\Localizable;
@@ -61,11 +61,11 @@ However, if you want to localize the existing fields in your model,
 the fields you added to the `$localizable` array will be returned as
 translated when the model is called.
 
-### 2. Localization process
+### Localization process
 
 When saving a model in a controller, you can use the following localization methods to handle the localization data:
 
-1. **translate** : This method allows you to localize a field of the model to a specific locale. It accepts three arguments: `locale`, `field`, `value`
+1. The **translate** method allows you to localize a specific field of the model to a specific locale. It accepts three arguments: It accepts three arguments: `locale`, `field` and `value`. For example:
 
 ```php
     $content = new Content();
@@ -78,7 +78,7 @@ When saving a model in a controller, you can use the following localization meth
     $content->translate('fr', 'content', 'French Content');
 ```
 
-2. **translateMany** : This method allows you to localize multiple fields of the model to a specific locale. It accepts two arguments: `locale`, `fields` where fields is an associative array of field and value.
+2. The **translateMany** method allows you to localize multiple fields of the model to a specific locale. It accepts two arguments: the `locale` and `an associative array of fields and their values`. For example:
 
 ```php
     $content->translateMany(
@@ -98,7 +98,7 @@ When saving a model in a controller, you can use the following localization meth
     );
 ```
 
-3. **translateManyLocales** : This method allows you to localize the model to multiple locales. It accepts array where keys are locales and values are arrays of fields and their values.
+3. The **translateManyLocales** method allows you to localize the model to multiple locales. It accepts an array where the keys are the locales and the values are arrays of fields and their values. For example:
 
 ```php
     $content->translateManyLocales(
@@ -115,13 +115,15 @@ When saving a model in a controller, you can use the following localization meth
     );
 ```
 
-### 3. Retrieving localizations for updating
+### Retrieving localizations for updating
 
-You can get the translated datas with using **getTranslations** method after you called the model.
+You can get the localized datas with using **getTranslations** method after you called the model.
 
 ```php
+    $content = Content::first()>getTranslations();
+    /* or */
     $content = Content::first();
-    $content->getTranslations()
+    $content->getTranslations();
 ```
 
 The `translations` attribute will be added to your model data:
@@ -141,29 +143,9 @@ The `translations` attribute will be added to your model data:
 }
 ```
 
-If you want to group translations by fields instead of by locale, you can pass the `field` option as a parameter to the getTranslations method. This will return an array of translations grouped by the field name.
+Then you can process the localized values in front-end and update with **translate**, **translateMany** and **translateManyLocales** methods.
 
-```php
-    $content->getTranslations('field')
-```
-
-```json
-{
-  "translations": {
-    "title": {
-      "en": "Englist Title",
-      "fr": "French Title",
-    },
-    "content": {
-      "en": "English Content",
-      "fr": "French Content",
-    }
-  }
-}
-```
-Then you can process the already localized values in front-end and update with **translate**, **translateMany** and **translateManyLocales** methods.
-
-### 4. Getting localized data
+### Getting localized data
 
 The localized data will be returned automatically according to the application locale. To change the application locale, you can use the `setLocale` method.
 
