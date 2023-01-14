@@ -108,7 +108,7 @@ When saving a model in a controller, you can use the following localization meth
     );
 ```
 
-3. **translateManyLocales** : This method allows you to localize the model to multiple locales. It accepts one argument: localization_data which is an associative array where keys are locales and values are arrays of fields and their values.
+3. **translateManyLocales** : This method allows you to localize the model to multiple locales. It accepts array where keys are locales and values are arrays of fields and their values.
 
 ```php
     $content->translateManyLocales(
