@@ -61,16 +61,6 @@ However, if you want to localize the existing fields in your model,
 the fields you added to the `$localizable` array will be returned as
 translated when the model is called.
 
-The localizations will be applied automaticly, according to application locale. There is not needed another action to retrieving localized data.
-
-#### If there is no record for the field you added to `$localizable`, the `field_fallback_value` in `config/localizable.php` will be returned. If you want it to return as null, set the `field_fallback` option to `false`.
-
-```php
-    'field_fallback' => true,
-
-    'field_fallback_value' => 'This field is not translated yet.',
-```
-
 ### 2. Localization process
 
 When saving a model in a controller, you can use the following localization methods to handle the localization data:
@@ -138,11 +128,6 @@ The `translations` attribute will be added to your model data:
 
 ```json
 {
-  "id": 1,
-  "created_at": "2023-01-14T19:18:55.000000Z",
-  "updated_at": "2023-01-14T19:18:55.000000Z",
-  "title": "Englist Title",
-  "content": "English Content",
   "translations": {
     "en": {
       "title": "Englist Title",
@@ -152,10 +137,6 @@ The `translations` attribute will be added to your model data:
       "title": "French Title",
       "content": "French Content"
     },
-    "ru": {
-      "title": null,
-      "content": null
-    }
   }
 }
 ```
@@ -166,4 +147,34 @@ If you want to group translations by fields instead of by locale, you can pass t
     $content->getTranslations('field')
 ```
 
+```json
+{
+  "translations": {
+    "title": {
+      "en": "Englist Title",
+      "fr": "French Title",
+    },
+    "content": {
+      "en": "English Content",
+      "fr": "French Content",
+    }
+  }
+}
+```
 Then you can process the already localized values in front-end and update with **translate**, **translateMany** and **translateManyLocales** methods.
+
+### 4. Getting localized data
+
+The localized data will be returned automatically according to the application locale. To change the application locale, you can use the `setLocale` method.
+
+```php
+    app()->setLocale('fr');
+```
+
+#### If there is no record for the field you added to `$localizable`, the `field_fallback_value` in `config/localizable.php` will be returned. If you want it to return as null, set the `field_fallback` option to `false`.
+
+```php
+    'field_fallback' => true,
+
+    'field_fallback_value' => 'This field is not translated yet.',
+```
