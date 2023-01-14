@@ -1,6 +1,6 @@
 # Laravel Localizable
 
-This trait offers a convenient way to handle the localization of model fields within a Laravel application. It provides functionality for setting and translating localizable fields of a model, as well as methods for deleting and retrieving translations. The trait utilizes the package's configuration file to establish default values and fallback options for localization, and also enables the retrieval of translations for localizable fields of a model by locale or field. Overall, it streamlines the localization process for your Laravel models.
+This trait offers a convenient way to handle the localization of model fields within a Laravel application. It provides functionality for setting and translating localizable fields of a model. The trait utilizes the package's configuration file to establish default values and fallback options for localization, and also enables the retrieval of translations for localizable fields of a model by locale or field. Overall, it streamlines the localization process for your Laravel models.
 
 ## Installation
 
@@ -160,3 +160,14 @@ The localized data will be returned automatically according to the application l
 
     'field_fallback_value' => 'This field is not translated yet.',
 ```
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+  
+## Support
+
+If you have any questions or suggestions, please feel free to contact me. You can also open an issue on GitHub.
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/aenzenith)
