@@ -173,6 +173,8 @@ The localized data will be returned automatically according to the application l
     'field_fallback_value' => 'This field is not translated yet.',
 ```
 
+All of the localized data will stored in `localizations` table. When a model is deleted, the related localizations will be deleted automatically.
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
