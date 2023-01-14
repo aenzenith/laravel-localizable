@@ -120,7 +120,7 @@ When saving a model in a controller, you can use the following localization meth
 You can get the localized datas with using **getTranslations** method after you called the model.
 
 ```php
-    $content = Content::first()>getTranslations();
+    $content = Content::first()->getTranslations();
     /* or */
     $content = Content::first();
     $content->getTranslations();
