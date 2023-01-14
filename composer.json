@@ -1,0 +1,24 @@
+{
+    "name": "aenzenith/laravel-localizable",
+    "description": "A package which is allow make localization in model attribute easily",
+    "autoload": {
+        "psr-4": {
+            "Aenzenith\\LaravelLocalizable\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Aenzenith",
+            "email": "shotter32@hotmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Aenzenith\\LaravelLocalizable\\LocalizableServiceProvider"
+            ]
+        }
+    }
+}
