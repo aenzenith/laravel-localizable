@@ -138,12 +138,16 @@ The `translations` attribute will be added to your model data:
     "fr": {
       "title": "French Title",
       "content": "French Content"
-    },
+    }
   }
 }
 ```
 
-Then you can process the localized values in front-end and update with **translate**, **translateMany** and **translateManyLocales** methods.
+Then you can process the localized values in front-end and pass the updated values to **translateManyLocales** method easily. For example:
+
+```php
+    $content->translateManyLocales($request->translations);
+```
 
 ### Getting localized data
 
@@ -165,7 +169,6 @@ The localized data will be returned automatically according to the application l
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
-  
 ## Support
 
 If you have any questions or suggestions, please feel free to contact me. You can also open an issue on GitHub.
