@@ -121,15 +121,10 @@ trait Localizable
     /**
      * This method is used to get the translations of localizable fields of a model
      *
-     * @param string $keyBy [locale, field]
      * @return array
      */
-    public function getTranslations($keyBy = "locale")
+    public function getTranslations()
     {
-
-        !in_array($keyBy, ["locale", "field"]) && $keyBy = "locale";
-
-
         $localizables = $this->localizable ?? [];
 
         $locales = $this->getConfig('locales');
@@ -145,21 +140,11 @@ trait Localizable
             ])->first();
         };
 
-        if ($keyBy == "locale") {
-            foreach (array_keys($locales) as $locale) {
-                $translations[$locale] = [];
-                foreach ($localizables as $localizable) {
-                    $localization = $query($locale, $localizable);
-                    $translations[$locale][$localizable] = $localization->value ?? null;
-                }
-            }
-        } elseif ($keyBy == "field") {
+        foreach (array_keys($locales) as $locale) {
+            $translations[$locale] = [];
             foreach ($localizables as $localizable) {
-                $translations[$localizable] = [];
-                foreach (array_keys($locales) as $locale) {
-                    $localization = $query($locale, $localizable);
-                    $translations[$localizable][$locale] = $localization->value ?? null;
-                }
+                $localization = $query($locale, $localizable);
+                $translations[$locale][$localizable] = $localization->value ?? null;
             }
         }
 
