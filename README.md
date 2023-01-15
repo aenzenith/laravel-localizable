@@ -1,6 +1,6 @@
 # Laravel Localizable
 
-This trait offers a convenient way to handle the localization of model fields within a Laravel application. It provides functionality for setting and translating localizable fields of a model. The trait utilizes the package's configuration file to establish default values and fallback options for localization, and also enables the retrieval of translations for localizable fields of a model by locale or field. Overall, it streamlines the localization process for your Laravel models.
+This trait offers an efficient and user-friendly solution for localizing model fields within a Laravel application. It grants the ability to set localizable fields without adding new database fields and the capability to translate existing table fields to different languages without adding new fields. This trait streamlines the localization process for your Laravel models by simplifying the management and maintenance of localizable fields.
 
 ## Installation
 
@@ -19,7 +19,7 @@ php artisan migrate
 php artisan vendor:publish --provider="Aenzenith\LaravelLocalizable\LocalizableServiceProvider"
 ```
 
-With publishing config you can access the config file from `config/localizable.php`
+With publishing, you can access the config file from `config/localizable.php`
 
 ## Usage
 
@@ -56,11 +56,9 @@ class Content extends Model
 
 ```
 
-The fields you added to the `$localizable` array don't have to be in the database table. You can add a localizable attribute without being dependent on any database field.
+The fields added to the `$localizable` array do not need to have a corresponding field in the database table. This allows you to add localizable attributes independently of the database, giving you the flexibility to handle localization without making changes to the underlying table structure. 
 
-However, if you want to localize the existing fields in your model,
-the fields you added to the `$localizable` array will be returned as
-localized when the model is called.
+However, if you wish to localize existing fields in your model, the fields added to the `$localizable` array will be returned as localized when the model is retrieved, without the need for any changes to the table structure.
 
 ### Localization process
 
@@ -108,11 +106,11 @@ Here is an example of a form that uses the `localizables` variable:
   @csrf @foreach ($localizables as $locale => $fields)
   <div>
     <label>({{ $locale }}) Title</label>
-    <input type="text" name="translations[{{ $locale }}][title]" />
+    <input type="text" name="localizations[{{ $locale }}][title]" />
   </div>
   <div>
     <label>({{ $locale }}) Content</label>
-    <textarea name="translations[{{ $locale }}][content]"></textarea>
+    <textarea name="localizations[{{ $locale }}][content]"></textarea>
   </div>
   @endforeach
 
@@ -140,7 +138,7 @@ const props = defineProps({
 });
 
 const form = useForm({
-  translations: props.localizables,
+  localizations: props.localizables,
 });
 
 const submit = () => {
@@ -154,11 +152,11 @@ const submit = () => {
     <div v-for="(fields, locale) in localizables" :key="locale">
       <div>
         <label>({{ $locale }}) Title</label>
-        <input type="text" v-model="form.translations[locale].title" />
+        <input type="text" v-model="form.localizations[locale].title" />
       </div>
       <div>
         <label>({{ $locale }}) Content</label>
-        <textarea v-model="form.translations[locale].content"></textarea>
+        <textarea v-model="form.localizations[locale].content"></textarea>
       </div>
     </div>
 
@@ -166,6 +164,8 @@ const submit = () => {
   </form>
 </template>
 ```
+
+While utilizing the `localizables` variable to create localized fields in the form is an option, it is not a requirement. You have the freedom to use your preferred front-end framework to design these fields in a way that aligns with your project's specific needs and requirements. You only need to ensure that you pass the correct parameters to the methods used when saving to the back-end. Below you can find information about the controller methods.
 
 When saving a model in a controller, you can use the following localization methods to handle the localization data:
 
@@ -222,25 +222,25 @@ When saving a model in a controller, you can use the following localization meth
 If you got the localizables with **getLocalizables** method and processed in the front-end, you can use the **localizeManyLocales** method to create the localized values easily. For example:
 
 ```php
-    $content->localizeManyLocales($request->translations);
+    $content->localizeManyLocales($request->localizations);
 ```
 
 ### Retrieving localizations for update
 
-You can get the localized datas with using **getTranslations** method after you called the model.
+You can get the localized datas with using **getLocalizations** method after you called the model.
 
 ```php
-    $content = Content::first()->getTranslations();
+    $content = Content::first()->getLocalizations();
     /* or */
     $content = Content::first();
-    $content->getTranslations();
+    $content->getLocalizations();
 ```
 
-The `translations` attribute will be added to your model data:
+The `localizations` attribute will be added to your model data:
 
 ```json
 {
-  "translations": {
+  "localizations": {
     "en": {
       "title": "Englist Title",
       "content": "English Content"
@@ -264,7 +264,7 @@ The `translations` attribute will be added to your model data:
 Then you can process the localized values in front-end and pass the updated values to **localizeManyLocales** method easily. For example:
 
 ```php
-    $content->localizeManyLocales($request->translations);
+    $content->localizeManyLocales($request->localizations);
 ```
 
 ### Getting localized data
