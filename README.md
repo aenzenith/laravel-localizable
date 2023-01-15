@@ -218,6 +218,12 @@ When saving a model in a controller, you can use the following localization meth
     );
 ```
 
+If you got the localizables with **getLocalizables** method and processed in the front-end, you can use the **translateManyLocales** method to create the localized values easily. For example:
+
+```php
+    $content->translateManyLocales($request->translations);
+```
+
 ### Retrieving localizations for updating
 
 You can get the localized datas with using **getTranslations** method after you called the model.
