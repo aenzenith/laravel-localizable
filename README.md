@@ -16,7 +16,7 @@ After installation completed, you have to run these commands to prepare package 
 ```bash
 php artisan migrate
 
-php artisan vendor:publish --tag=config --force
+php artisan vendor:publish --provider="Aenzenith\LaravelLocalizable\LocalizableServiceProvider"
 ```
 
 With publishing config you can access the config file from `config/localizable.php`
@@ -31,6 +31,7 @@ You can modify the locales that will be use, in the `config/localizable.php` con
 'locales' => [
     'en' => 'English',
     'fr' => 'French',
+    /* */
     'es' => 'Spanish',
     'de' => 'German',
 ],
@@ -104,9 +105,7 @@ Here is an example of a form that uses the `localizables` variable:
 
 ```html
 <form action="{{ route('content.store') }}" method="POST">
-  @csrf
-  
-  @foreach ($localizables as $locale => $fields)
+  @csrf @foreach ($localizables as $locale => $fields)
   <div>
     <label>({{ $locale }}) Title</label>
     <input type="text" name="translations[{{ $locale }}][title]" />
@@ -226,7 +225,7 @@ If you got the localizables with **getLocalizables** method and processed in the
     $content->translateManyLocales($request->translations);
 ```
 
-### Retrieving localizations for updating
+### Retrieving localizations for update
 
 You can get the localized datas with using **getTranslations** method after you called the model.
 
@@ -288,7 +287,7 @@ All of the localized data will stored in `localizations` table. When a model is 
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](https://github.com/aenzenith/laravel-localizable/blob/main/LICENSE)
 
 ## Support
 
