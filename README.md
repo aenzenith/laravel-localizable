@@ -63,6 +63,113 @@ translated when the model is called.
 
 ### Localization process
 
+You can use the **getLocalizables** method to get the localizable fields of the model for each locale to pass them to the front-end. For example:
+
+```php
+    $localizables = Content::getLocalizables();
+
+    //you can pass also locales list with config('localizable.locales') for language names
+
+    return view('content.create', compact('localizables'));
+```
+
+The `localizables` variable will be added to your view data:
+
+```json
+{
+  "localizables": {
+    "en": {
+      "title": null,
+      "content": null
+    },
+    "fr": {
+      "title": null,
+      "content": null
+    },
+    "es": {
+      "title": null,
+      "content": null
+    },
+    "de": {
+      "title": null,
+      "content": null
+    }
+  }
+}
+```
+
+You can create a form with the fields you added to the `$localizable` array and pass the `localizables` variable to the form. Then you can use the `localizables` variable to create the localized fields in the form.
+
+Here is an example of a form that uses the `localizables` variable:
+
+```html
+
+    <form action="{{ route('content.store') }}" method="POST">
+        @csrf
+
+        @foreach ($localizables as $locale => $fields)
+            <div>
+                <label>({{ $locale }}) Title</label>
+                <input type="text" name="translations[{{ $locale }}][title]">
+            </div>
+            <div>
+                <label>({{ $locale }}) Content</label>
+                <textarea name="translations[{{ $locale }}][content]"></textarea>
+            </div>
+        @endforeach
+
+        <button type="submit">Submit</button>
+    </form>
+```
+
+In the Vue.js with Inertia.js:
+
+```php
+    return Inertia::render('Content/Create', [
+        'localizables' => Content::getLocalizables(),
+    ]);
+```
+
+```javascript
+
+    import { useForm } from '@inertiajs/inertia';
+    import { defineProps } from 'vue';
+
+    const props = defineProps({
+        localizables: {
+            type: Object,
+            required: true,
+        },
+    });
+
+    const form = useForm({
+        translations: props.localizables,
+    });
+
+    const submit = () => {
+        form.post(route('content.store'));
+    };
+```
+
+```html
+    <form>
+
+        <div v-for="(fields, locale) in localizables" :key="locale">
+            <div>
+                <label>({{ $locale }}) Title</label>
+                <input type="text" v-model="form.translations[locale].title">
+            </div>
+            <div>
+                <label>({{ $locale }}) Content</label>
+                <textarea v-model="form.translations[locale].content"></textarea>
+            </div>
+        </div>
+
+        <button type="button" @click="submit()">Submit</button>
+
+    </form>
+```
+
 When saving a model in a controller, you can use the following localization methods to handle the localization data:
 
 1. The **translate** method allows you to localize a specific field of the model to a specific locale. It accepts three arguments: `locale`, `field` and `value`. For example:
@@ -114,82 +221,6 @@ When saving a model in a controller, you can use the following localization meth
         ]
     );
 ```
-
-As well you can use `locales` array from `config/localizable.php` file to getting locale list for sending to front-end. With this data you can create a form for localization.
-
-```php
-    /* get locale list from config file */
-    $locales= config('localizable.locales');
-
-    return view('content.create', compact('locales'));
-```
-
-```html
-    <form action="{{ route('content.store') }}" method="POST">
-        @csrf
-        @foreach ($locales as $locale)
-            <div>
-                <label for="title_{{ $locale }}">{{ $locale }} Title</label>
-                <input type="text" name="translations[{{ $locale }}][title]" id="title_{{ $locale }}">
-            </div>
-            <div>
-                <label for="content_{{ $locale }}">{{ $locale }} Content</label>
-                <textarea name="translations[{{ $locale }}][content]" id="content_{{ $locale }}"></textarea>
-            </div>
-        @endforeach
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-```
-
-or in the Vue.js with Inertia.js
-
-```php
-    return Inertia::render('Content/Create', [
-            'locales' => config('localizable.locales'),
-        ]);
-```	
-
-```html
-   <template>
-        <form>
-            <div v-for="(locale, index) in locales" :key="index">
-                <div>
-                    <label :for="'title_' + locale">{{ locale }} Title</label>
-                    <input type="text" v-model="form.translations[locale].title">
-                </div>
-                <div>
-                    <label :for="'content_' + locale">{{ locale }} Content</label>
-                    <textarea v-model="form.translations[locale].content"></textarea>
-                </div>
-            </div>
-            <button type="button" @click="postForm()" class="btn btn-primary">Submit</button>
-        </form>
-    </template>
-```
-
-```js
-    export default {
-        // ...
-        props: {
-            locales: {
-                type: Object,
-                required: true,
-            },
-        },
-        data() {
-            return {
-                translations: {},
-                form: 
-            }
-        },
-        methods: {
-            postForm() {
-                // post form
-            },
-        },
-    }
-```
-
 
 ### Retrieving localizations for updating
 
