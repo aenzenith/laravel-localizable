@@ -152,22 +152,24 @@ In the Vue.js with Inertia.js:
 ```
 
 ```html
-    <form>
-
-        <div v-for="(fields, locale) in localizables" :key="locale">
-            <div>
-                <label>({{ $locale }}) Title</label>
-                <input type="text" v-model="form.translations[locale].title">
+    <template>
+        <form>
+            
+            <div v-for="(fields, locale) in localizables" :key="locale">
+                <div>
+                    <label>({{ $locale }}) Title</label>
+                    <input type="text" v-model="form.translations[locale].title">
+                </div>
+                <div>
+                    <label>({{ $locale }}) Content</label>
+                    <textarea v-model="form.translations[locale].content"></textarea>
+                </div>
             </div>
-            <div>
-                <label>({{ $locale }}) Content</label>
-                <textarea v-model="form.translations[locale].content"></textarea>
-            </div>
-        </div>
-
-        <button type="button" @click="submit()">Submit</button>
-
-    </form>
+    
+            <button type="button" @click="submit()">Submit</button>
+    
+        </form>
+    </template>
 ```
 
 When saving a model in a controller, you can use the following localization methods to handle the localization data:
