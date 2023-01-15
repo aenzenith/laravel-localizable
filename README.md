@@ -104,7 +104,9 @@ Here is an example of a form that uses the `localizables` variable:
 
 ```html
 <form action="{{ route('content.store') }}" method="POST">
-  @csrf @foreach ($localizables as $locale => $fields)
+  @csrf
+  
+  @foreach ($localizables as $locale => $fields)
   <div>
     <label>({{ $locale }}) Title</label>
     <input type="text" name="translations[{{ $locale }}][title]" />
