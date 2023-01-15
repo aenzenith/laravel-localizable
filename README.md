@@ -60,7 +60,7 @@ The fields you added to the `$localizable` array don't have to be in the databas
 
 However, if you want to localize the existing fields in your model,
 the fields you added to the `$localizable` array will be returned as
-translated when the model is called.
+localized when the model is called.
 
 ### Localization process
 
@@ -169,23 +169,23 @@ const submit = () => {
 
 When saving a model in a controller, you can use the following localization methods to handle the localization data:
 
-1. The **translate** method allows you to localize a specific field of the model to a specific locale. It accepts three arguments: `locale`, `field` and `value`. For example:
+1. The **localize** method allows you to localize a specific field of the model to a specific locale. It accepts three arguments: `locale`, `field` and `value`. For example:
 
 ```php
     $content = new Content();
     $content->save();
 
-    $content->translate('en', 'title', 'English Title');
-    $content->translate('en', 'content', 'English Content');
+    $content->localize('en', 'title', 'English Title');
+    $content->localize('en', 'content', 'English Content');
 
-    $content->translate('fr', 'title', 'French Title');
-    $content->translate('fr', 'content', 'French Content');
+    $content->localize('fr', 'title', 'French Title');
+    $content->localize('fr', 'content', 'French Content');
 ```
 
-2. The **translateMany** method allows you to localize multiple fields of the model to a specific locale. It accepts two arguments: the `locale` and `an associative array of fields and their values`. For example:
+2. The **localizeMany** method allows you to localize multiple fields of the model to a specific locale. It accepts two arguments: the `locale` and `an associative array of fields and their values`. For example:
 
 ```php
-    $content->translateMany(
+    $content->localizeMany(
         'en',
         [
             'title' => 'English Title',
@@ -193,7 +193,7 @@ When saving a model in a controller, you can use the following localization meth
         ]
     );
 
-    $content->translateMany(
+    $content->localizeMany(
         'fr',
         [
             'title' => 'French Title',
@@ -202,10 +202,10 @@ When saving a model in a controller, you can use the following localization meth
     );
 ```
 
-3. The **translateManyLocales** method allows you to localize the model to multiple locales. It accepts an array where the keys are the locales and the values are arrays of fields and their values. For example:
+3. The **localizeManyLocales** method allows you to localize the model to multiple locales. It accepts an array where the keys are the locales and the values are arrays of fields and their values. For example:
 
 ```php
-    $content->translateManyLocales(
+    $content->localizeManyLocales(
         [
             'en' => [
                 'title' => 'English Title',
@@ -219,10 +219,10 @@ When saving a model in a controller, you can use the following localization meth
     );
 ```
 
-If you got the localizables with **getLocalizables** method and processed in the front-end, you can use the **translateManyLocales** method to create the localized values easily. For example:
+If you got the localizables with **getLocalizables** method and processed in the front-end, you can use the **localizeManyLocales** method to create the localized values easily. For example:
 
 ```php
-    $content->translateManyLocales($request->translations);
+    $content->localizeManyLocales($request->translations);
 ```
 
 ### Retrieving localizations for update
@@ -261,10 +261,10 @@ The `translations` attribute will be added to your model data:
 }
 ```
 
-Then you can process the localized values in front-end and pass the updated values to **translateManyLocales** method easily. For example:
+Then you can process the localized values in front-end and pass the updated values to **localizeManyLocales** method easily. For example:
 
 ```php
-    $content->translateManyLocales($request->translations);
+    $content->localizeManyLocales($request->translations);
 ```
 
 ### Getting localized data
@@ -280,7 +280,7 @@ The localized data will be returned automatically according to the application l
 ```php
     'field_fallback' => true,
 
-    'field_fallback_value' => 'This field is not translated yet.',
+    'field_fallback_value' => 'This field is not localized yet.',
 ```
 
 All of the localized data will stored in `localizations` table. When a model is deleted, the related localizations will be deleted automatically.

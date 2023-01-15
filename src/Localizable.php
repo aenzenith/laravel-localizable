@@ -10,11 +10,11 @@ trait Localizable
     public static function booted()
     {
         static::retrieved(function (Model $model) {
-            $model->localize();
+            $model->translate();
         });
 
         static::deleted(function (Model $model) {
-            $model->unlocalize();
+            $model->destroyLocalizations();
         });
     }
 
@@ -35,7 +35,7 @@ trait Localizable
      * @param string $value
      * @return Model
      */
-    public function translate($locale, $field, $value = null)
+    public function localize($locale, $field, $value = null)
     {
         if (!in_array($field, $this->localizable)) {
             throw new \Exception('Field "' . $field . '" is not localizable');
@@ -55,37 +55,37 @@ trait Localizable
     }
 
     /**
-     * This method is used to translate a field of a model, multiple locales and fields can be translated
+     * This method is used to localize a field of a model, multiple locales and fields can be localized
      *
      * @param string $locale
      * @param array $fields [field => value]
      * @return Model
      */
-    public function translateMany($locale, $fields)
+    public function localizeMany($locale, $fields)
     {
         foreach ($fields as $field => $value) {
-            $this->translate($locale, $field, $value);
+            $this->localize($locale, $field, $value);
         }
 
         return $this;
     }
 
     /**
-     * This method is used to translate a field of a model, multiple locales and fields can be translated
+     * This method is used to localize a field of a model, multiple locales and fields can be localized
      *
      * @param array $localization_data [locale => [field => value]]
      * @return Model
      */
-    public function translateManyLocales($localization_data)
+    public function localizeManyLocales($localization_data)
     {
         foreach ($localization_data as $locale => $field) {
-            $this->translateMany($locale, $field);
+            $this->localizeMany($locale, $field);
         }
 
         return $this;
     }
 
-    private function unlocalize()
+    private function destroyLocalizations()
     {
         Localization::where([
             'model_type' => get_class($this),
@@ -95,7 +95,7 @@ trait Localizable
         return $this;
     }
 
-    private function localize()
+    private function translate()
     {
         $localizables = $this->localizable ?? [];
 
@@ -123,13 +123,13 @@ trait Localizable
      *
      * @return array
      */
-    public function getTranslations()
+    public function getLocalizations()
     {
         $localizables = $this->localizable ?? [];
 
         $locales = $this->getConfig('locales');
 
-        $translations = [];
+        $localizations = [];
 
         $query = function ($locale, $localizable) {
             return Localization::where([
@@ -141,14 +141,14 @@ trait Localizable
         };
 
         foreach (array_keys($locales) as $locale) {
-            $translations[$locale] = [];
+            $localizations[$locale] = [];
             foreach ($localizables as $localizable) {
                 $localization = $query($locale, $localizable);
-                $translations[$locale][$localizable] = $localization->value ?? null;
+                $localizations[$locale][$localizable] = $localization->value ?? null;
             }
         }
 
-        $this->attributes['translations'] = $translations;
+        $this->attributes['localizations'] = $localizations;
 
         return $this;
     }
