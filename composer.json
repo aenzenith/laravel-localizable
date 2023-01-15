@@ -14,6 +14,7 @@
     ],
     "minimum-stability": "dev",
     "require": {},
+    "license": "MIT",
     "extra": {
         "laravel": {
             "providers": [
