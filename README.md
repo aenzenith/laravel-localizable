@@ -25,7 +25,7 @@ With publishing config you can access the config file from `config/localizable.p
 
 ### Setting the locales list
 
-You can modify the default locales in the configuration file by adding new languages in the form of language codes and language names to the locales array. For example, if you want to add Spanish and German to the list of available languages, you can add the following lines to your `config/localizable.php` configuration file:
+You can modify the locales that will be use, in the `config/localizable.php` configuration file by adding new languages in the form of language codes and language names to the locales array. For example, if you want to add Spanish and German to the list of available languages, simply you can add the following lines to your configuration file:
 
 ```php
 'locales' => [
@@ -103,23 +103,20 @@ You can create a form with the fields you added to the `$localizable` array and 
 Here is an example of a form that uses the `localizables` variable:
 
 ```html
+<form action="{{ route('content.store') }}" method="POST">
+  @csrf @foreach ($localizables as $locale => $fields)
+  <div>
+    <label>({{ $locale }}) Title</label>
+    <input type="text" name="translations[{{ $locale }}][title]" />
+  </div>
+  <div>
+    <label>({{ $locale }}) Content</label>
+    <textarea name="translations[{{ $locale }}][content]"></textarea>
+  </div>
+  @endforeach
 
-    <form action="{{ route('content.store') }}" method="POST">
-        @csrf
-
-        @foreach ($localizables as $locale => $fields)
-            <div>
-                <label>({{ $locale }}) Title</label>
-                <input type="text" name="translations[{{ $locale }}][title]">
-            </div>
-            <div>
-                <label>({{ $locale }}) Content</label>
-                <textarea name="translations[{{ $locale }}][content]"></textarea>
-            </div>
-        @endforeach
-
-        <button type="submit">Submit</button>
-    </form>
+  <button type="submit">Submit</button>
+</form>
 ```
 
 In the Vue.js with Inertia.js:
@@ -131,45 +128,42 @@ In the Vue.js with Inertia.js:
 ```
 
 ```javascript
+import { useForm } from "@inertiajs/inertia";
+import { defineProps } from "vue";
 
-    import { useForm } from '@inertiajs/inertia';
-    import { defineProps } from 'vue';
+const props = defineProps({
+  localizables: {
+    type: Object,
+    required: true,
+  },
+});
 
-    const props = defineProps({
-        localizables: {
-            type: Object,
-            required: true,
-        },
-    });
+const form = useForm({
+  translations: props.localizables,
+});
 
-    const form = useForm({
-        translations: props.localizables,
-    });
-
-    const submit = () => {
-        form.post(route('content.store'));
-    };
+const submit = () => {
+  form.post(route("content.store"));
+};
 ```
 
 ```html
-    <template>
-        <form>
-            
-            <div v-for="(fields, locale) in localizables" :key="locale">
-                <div>
-                    <label>({{ $locale }}) Title</label>
-                    <input type="text" v-model="form.translations[locale].title">
-                </div>
-                <div>
-                    <label>({{ $locale }}) Content</label>
-                    <textarea v-model="form.translations[locale].content"></textarea>
-                </div>
-            </div>
-    
-            <button type="button" @click="submit()">Submit</button>
-    
-        </form>
-    </template>
+<template>
+  <form>
+    <div v-for="(fields, locale) in localizables" :key="locale">
+      <div>
+        <label>({{ $locale }}) Title</label>
+        <input type="text" v-model="form.translations[locale].title" />
+      </div>
+      <div>
+        <label>({{ $locale }}) Content</label>
+        <textarea v-model="form.translations[locale].content"></textarea>
+      </div>
+    </div>
+
+    <button type="button" @click="submit()">Submit</button>
+  </form>
+</template>
 ```
 
 When saving a model in a controller, you can use the following localization methods to handle the localization data:
