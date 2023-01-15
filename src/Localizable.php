@@ -152,4 +152,25 @@ trait Localizable
 
         return $this;
     }
+
+    /**
+     * This method is used to get the localizable fields of a model with null values for each locale
+     *
+     * @return array
+     */
+    public static function getLocalizeables()
+    {
+        $locales = config('localizable.locales');
+        $attrs = (new static)->localizable ?? [];
+
+        $localizables = [];
+
+        foreach ($attrs as $attr) {
+            foreach ($locales as $code => $locale) {
+                $localizables[$code][$attr] = null;
+            }
+        }
+
+        return $localizables;
+    }
 }
