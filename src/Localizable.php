@@ -158,10 +158,11 @@ trait Localizable
      *
      * @return array
      */
-    public static function getLocalizeables()
+    public static function getLocalizables()
     {
-        $locales = config('localizable.locales');
-        $attrs = (new static)->localizable ?? [];
+        $model= new static;
+        $locales = $model->getConfig('locales');
+        $attrs = $model->localizable ?? [];
 
         $localizables = [];
 
